@@ -32,8 +32,8 @@ for i in range(0,len(products_instance.items),2):
         st.button(f"Buy", key=f"button_{i}", on_click=onClick)
     with col2:
         # st.text("pretend this is an image")
-        st.text(f"- {products_instance.items[i]['name']}: {products_instance.items[i]['details']}")
-        st.image(products_instance.items[i]["image"])
+        st.text(f"- {products_instance.items[i+1]['name']}: {products_instance.items[i+1]['details']}")
+        st.image(products_instance.items[i+1]["image"])
         st.button(f"Buy", key=f"button_{i+1}", on_click=onClick)
     
 
