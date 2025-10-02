@@ -1,7 +1,7 @@
 class products:
     
     def __init__(self):
-        self.items:list[dict] = []
+        self.items:list[dict] = [{"name": "Sample Product", "details": "This is a sample product."}]
 
     def add_product(self, product: dict):
         self.items.append({"name": product["name"], "details": product["details"]})
