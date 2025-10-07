@@ -1,22 +1,3 @@
-class products:
-    def __init__(self):
-        self.items = []
-        
-    def add_product(self, product: dict[str, str, int, str]):
-        self.items.append({"name": product["name"], "details": product["details"], "price": product["price"], "image": product["image"]})
-
-    def list_products(self):
-        return self.items
-
-class discounted_products(products):
-    def __init__(self, discount: float):
-        super().__init__()
-        self.discount = discount
-
-    def apply_discount(self):
-        for item in self.items:
-            item["details"] += f" (Discounted by {self.discount*100}%)"
-
 # Product Class
 class Product:
     def __init__(self, name: str="Default", details: str="Default Description", 
@@ -37,4 +18,13 @@ class Product:
     def removeStock(self, stock:int):
         self.stock = max(0, self.stock-stock)
 
+# products class
+class products:
+    def __init__(self):
+        self.items = [Product]
+        
+    def add_product(self, product: Product):
+        self.items.append(product.__dict__)
 
+    def list_products(self):
+        return self.items

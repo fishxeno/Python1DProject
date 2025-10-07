@@ -1,4 +1,4 @@
-import products as _p, copy
+import Products as _p, copy
 
 # Returns initial total and total after additional charges
 def getCartTotal(cart: list[_p.Product]):  
