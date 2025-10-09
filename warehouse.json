@@ -1,0 +1,82 @@
+[
+    {
+        "name": "Product 1",
+        "details": "Default Description",
+        "price": 10,
+        "priceAfterDiscount": 9.5,
+        "image": "./images/image1.png",
+        "stock": 60
+    },
+    {
+        "name": "Product 2",
+        "details": "Default Description",
+        "price": 15,
+        "priceAfterDiscount": 14.25,
+        "image": "./images/image2.png",
+        "stock": 0
+    },
+    {
+        "name": "Product 3",
+        "details": "Default Description",
+        "price": 20,
+        "priceAfterDiscount": 19.0,
+        "image": "./images/image3.png",
+        "stock": 18
+    },
+    {
+        "name": "Product 4",
+        "details": "Default Description",
+        "price": 25,
+        "priceAfterDiscount": 23.75,
+        "image": "./images/image4.png",
+        "stock": 20
+    },
+    {
+        "name": "Product 5",
+        "details": "Default Description",
+        "price": 30,
+        "priceAfterDiscount": 28.5,
+        "image": "./images/image5.png",
+        "stock": 10
+    },
+    {
+        "name": "Product 6",
+        "details": "Default Description",
+        "price": 35,
+        "priceAfterDiscount": 33.25,
+        "image": "./images/image6.png",
+        "stock": 5
+    },
+    {
+        "name": "Product 7",
+        "details": "Default Description",
+        "price": 40,
+        "priceAfterDiscount": 38.0,
+        "image": "./images/image7.png",
+        "stock": 2
+    },
+    {
+        "name": "Product 8",
+        "details": "Default Description",
+        "price": 45,
+        "priceAfterDiscount": 42.75,
+        "image": "./images/image8.png",
+        "stock": 0
+    },
+    {
+        "name": "Product 9",
+        "details": "Default Description",
+        "price": 50,
+        "priceAfterDiscount": 47.5,
+        "image": "./images/image9.png",
+        "stock": 0
+    },
+    {
+        "name": "Product 10",
+        "details": "Default Description",
+        "price": 55,
+        "priceAfterDiscount": 52.25,
+        "image": "./images/image10.png",
+        "stock": 0
+    }
+]

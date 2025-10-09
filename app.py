@@ -1,7 +1,6 @@
 import streamlit as st
 import mylibrary #functions
 import Products
-import appTesting #importing app testing py file
 
 products_instance = Products.products()
 # Mock data for demonstration purposes
@@ -19,50 +18,39 @@ products_instance.items = [
 
 st.write("We have the following products:")
 
-search_term = st.text_input("Search:") #search bar 
-search_results = appTesting.searchItem(search_term,products_instance.items)
-if search_term:
-    if search_results:
-        st.write("There are {} results for {} ".format(len(search_results),search_term))
-    else:  
-        st.warning("No results found, please try again")
-else:
-    st.info("Search:")
-
-
+search_term = st.text_input("Search:")
 
 for i in range(0,len(products_instance.items),2):
     col1, col2 = st.columns(2, vertical_alignment="center", gap="medium", border=True)
     # define dialog for adding to cart
     # because of the loop, need to pass i as an argument
-    @st.dialog(f"Thank you for choosing {products_instance.items[i]['name']}! Please select the quantity.")
-    
+    @st.dialog(f"Thank you for choosing {filteredProducts[i].name}! Please select the quantity.")
     def addToCart(i=i):
         
-        st.write(f"You have selected {products_instance.items[i]['name']}.")
-        quantity = st.number_input("Enter quantity:", min_value=1, max_value=products_instance.items[i]['stock'], value=1)
+        st.write(f"You have selected {filteredProducts[i].name}.")
+        quantity = st.number_input("Enter quantity:", min_value=1, max_value=filteredProducts[i].stock, value=1)
         if st.button("Add to cart"):
-            st.success(f"Added {quantity} of {products_instance.items[i]['name']} to cart.")
-            st.session_state.purchase = {"item": products_instance.items[i]['name'], "quantity": quantity}
+            st.success(f"Added {quantity} of {filteredProducts[i].name} to cart.")
+            st.session_state.purchase = {"item": filteredProducts[i].name, "quantity": quantity}
             
     #columns
     with col1:
-        st.text(f"- {products_instance.items[i]['name']}: {products_instance.items[i]['details']}")
-        st.image(products_instance.items[i]["image"])
-        if (products_instance.items[i]['stock'] != 0):
+        st.text(f"- {filteredProducts[i].name}: {filteredProducts[i].details}")
+        st.image(filteredProducts[i].image)
+        if (filteredProducts[i].stock != 0):
             if (st.button(f"Add to cart", key=f"button_{i}")):
                 addToCart(i)
         else:
-            st.button(label=f"{products_instance.items[i]['name']} is out of stock",key=f"button_{i}_out_of_stock",disabled=True)
+            st.button(label=f"{filteredProducts[i].name} is out of stock",key=f"button_{i}_out_of_stock",disabled=True)
             
     with col2:
-        st.text(f"- {products_instance.items[i+1]['name']}: {products_instance.items[i+1]['details']}")
-        st.image(products_instance.items[i+1]["image"])
-        if (products_instance.items[i+1]['stock'] != 0):
+        st.text(f"- {filteredProducts[i+1].name}: {filteredProducts[i+1].details}")
+        st.image(filteredProducts[i+1].image)
+        if (filteredProducts[i+1].stock != 0):
             if (st.button(f"Add to cart", key=f"button_{i+1}")):
                 addToCart(i+1)
         else:
-            st.button(label=f"{products_instance.items[i+1]['name']} is out of stock",key=f"button_{i+1}_out_of_stock",disabled=True)
+            st.button(label=f"{filteredProducts[i+1].name} is out of stock",key=f"button_{i+1}_out_of_stock",disabled=True)
 
 #checkout button and dialog
 @st.dialog("Checkout")
