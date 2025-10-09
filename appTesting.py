@@ -6,7 +6,6 @@ def getCartTotal(cart: list[_p.Product]):
     total = 0
     for item in cart: 
         total += item.stock * item.getPrice(isMember)
-    
     # If you want to include additional charges
     totalAfterCharges = total * 1.09
     return (total,totalAfterCharges)
