@@ -1,6 +1,7 @@
 import streamlit as st
 import mylibrary #functions
 import Products
+import appTesting #importing app testing py file
 
 products_instance = Products.products()
 # Mock data for demonstration purposes
@@ -18,7 +19,17 @@ products_instance.items = [
 
 st.write("We have the following products:")
 
-search_term = st.text_input("Search:")
+search_term = st.text_input("Search:") #search bar 
+search_results = appTesting.searchItem(search_term,products_instance.items)
+if search_term:
+    if search_results:
+        st.write("There are {} results for {} ".format(len(search_results),search_term))
+    else:  
+        st.warning("No results found, please try again")
+else:
+    st.info("Search:")
+
+
 
 for i in range(0,len(products_instance.items),2):
     col1, col2 = st.columns(2, vertical_alignment="center", gap="medium", border=True)

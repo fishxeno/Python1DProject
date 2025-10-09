@@ -23,10 +23,10 @@ def updateInventoryAndClearCart():
 # Returns a list (copy) of products from a search string - case-insensitive
 # i.e - "product" -> should return all 3 items
 # i.e - "product 3" -> should return product 3
-def searchItem(searchString):
+def searchItem(searchString,inventory):
     result=[]
     for item in inventory:
-        if searchString.lower() in item.name.lower():
+        if searchString.lower() in item['name'].lower():
             result.append(item)
     return result
 
