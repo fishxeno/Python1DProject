@@ -18,11 +18,14 @@ products_instance.items = [
 
 st.write("We have the following products:")
 
+search_term = st.text_input("Search:")
+
 for i in range(0,len(products_instance.items),2):
     col1, col2 = st.columns(2, vertical_alignment="center", gap="medium", border=True)
     # define dialog for adding to cart
     # because of the loop, need to pass i as an argument
     @st.dialog(f"Thank you for choosing {products_instance.items[i]['name']}! Please select the quantity.")
+    
     def addToCart(i=i):
         
         st.write(f"You have selected {products_instance.items[i]['name']}.")

@@ -13,7 +13,12 @@ def getCartTotal(cart: list[_p.Product]):
 # Function is called when a transaction has been made, it makes the necessary stock changes 
 # to the inventory variable and clears the cart 
 def updateInventoryAndClearCart():
-    pass
+    for item in cart:
+        for inventoryitem in inventory:
+            if item.name == inventoryitem.name: #matches item to items in inventory 
+                inventoryitem.removeStock(item.stock) #removes item from inventory
+    cart.clear()     
+
 
 # Returns a list (copy) of products from a search string - case-insensitive
 # i.e - "product" -> should return all 3 items
