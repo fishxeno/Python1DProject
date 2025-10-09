@@ -19,7 +19,11 @@ def updateInventoryAndClearCart():
 # i.e - "product" -> should return all 3 items
 # i.e - "product 3" -> should return product 3
 def searchItem(searchString):
-    pass
+    result=[]
+    for item in inventory:
+        if searchString.lower() in item.name.lower():
+            result.append(item)
+    return result
 
 # MAIN LOGIC FOR THE CODE STARTS HERE
 # Test the business logic for the application using print/input statements before incorporating into streamlit
