@@ -1,57 +1,58 @@
 import streamlit as st
 import mylibrary #functions
-import Products
+import Products as _p
 
-products_instance = Products.products()
-# Mock data for demonstration purposes
-products_instance.items = [
-{"name": "Sample Product", "details": "This is a sample product.", "price": 10, "image": "./images/image1.png", "stock": 100}, 
-{"name": "Another Product", "details": "This is another product.", "price": 15, "image": "./images/image2.png", "stock": 50},
-{"name": "Third Product", "details": "This is the third product.", "price": 20, "image": "./images/image3.png", "stock": 30},
-{"name": "Fourth Product", "details": "This is the fourth product.", "price": 25, "image": "./images/image4.png", "stock": 20},
-{"name": "Fifth Product", "details": "This is the fifth product.", "price": 30, "image": "./images/image5.png", "stock": 10},
-{"name": "Sixth Product", "details": "This is the sixth product.", "price": 35, "image": "./images/image6.png", "stock": 5},
-{"name": "Seventh Product", "details": "This is the seventh product.", "price": 40, "image": "./images/image7.png", "stock": 2},
-{"name": "Eighth Product", "details": "This is the eighth product.", "price": 45, "image": "./images/image8.png", "stock": 0},
-{"name": "Ninth Product", "details": "This is the ninth product.", "price": 50, "image": "./images/image9.png", "stock": 0},
-{"name": "Tenth Product", "details": "This is the tenth product.", "price": 55, "image": "./images/image10.png", "stock": 0}]
+IMAGE_PATH = "./images/"
+# Integration of inventory system - inventory is never changed
+inventory = [
+    _p.Product(name="Product 1", price=10, stock=100, image=f"{IMAGE_PATH}/image1.png"),
+    _p.Product(name="Product 2", price=15, stock=50, image=f"{IMAGE_PATH}/image2.png"),
+    _p.Product(name="Product 3", price=20, stock=30, image=f"{IMAGE_PATH}/image3.png"),
+    _p.Product(name="Product 4", price=25, stock=20, image=f"{IMAGE_PATH}/image4.png"),
+    _p.Product(name="Product 5", price=30, stock=10, image=f"{IMAGE_PATH}/image5.png"),
+    _p.Product(name="Product 6", price=35, stock=5, image=f"{IMAGE_PATH}/image6.png"),
+    _p.Product(name="Product 7", price=40, stock=2, image=f"{IMAGE_PATH}/image7.png"),
+    _p.Product(name="Product 8", price=45, image=f"{IMAGE_PATH}/image8.png"),
+    _p.Product(name="Product 9", price=50, image=f"{IMAGE_PATH}/image9.png"),
+    _p.Product(name="Product 10", price=55, image=f"{IMAGE_PATH}/image10.png")
+]
+# We will display the filtered items here
+filteredProducts = inventory[:]
+cart = []
 
 st.write("We have the following products:")
 
-search_term = st.text_input("Search:")
-
-for i in range(0,len(products_instance.items),2):
+for i in range(0,len(filteredProducts),2):
     col1, col2 = st.columns(2, vertical_alignment="center", gap="medium", border=True)
     # define dialog for adding to cart
     # because of the loop, need to pass i as an argument
-    @st.dialog(f"Thank you for choosing {products_instance.items[i]['name']}! Please select the quantity.")
-    
+    @st.dialog(f"Thank you for choosing {filteredProducts[i].name}! Please select the quantity.")
     def addToCart(i=i):
         
-        st.write(f"You have selected {products_instance.items[i]['name']}.")
-        quantity = st.number_input("Enter quantity:", min_value=1, max_value=products_instance.items[i]['stock'], value=1)
+        st.write(f"You have selected {filteredProducts[i].name}.")
+        quantity = st.number_input("Enter quantity:", min_value=1, max_value=filteredProducts[i].stock, value=1)
         if st.button("Add to cart"):
-            st.success(f"Added {quantity} of {products_instance.items[i]['name']} to cart.")
-            st.session_state.purchase = {"item": products_instance.items[i]['name'], "quantity": quantity}
+            st.success(f"Added {quantity} of {filteredProducts[i].name} to cart.")
+            st.session_state.purchase = {"item": filteredProducts[i].name, "quantity": quantity}
             
     #columns
     with col1:
-        st.text(f"- {products_instance.items[i]['name']}: {products_instance.items[i]['details']}")
-        st.image(products_instance.items[i]["image"])
-        if (products_instance.items[i]['stock'] != 0):
+        st.text(f"- {filteredProducts[i].name}: {filteredProducts[i].details}")
+        st.image(filteredProducts[i].image)
+        if (filteredProducts[i].stock != 0):
             if (st.button(f"Add to cart", key=f"button_{i}")):
                 addToCart(i)
         else:
-            st.button(label=f"{products_instance.items[i]['name']} is out of stock",key=f"button_{i}_out_of_stock",disabled=True)
+            st.button(label=f"{filteredProducts[i].name} is out of stock",key=f"button_{i}_out_of_stock",disabled=True)
             
     with col2:
-        st.text(f"- {products_instance.items[i+1]['name']}: {products_instance.items[i+1]['details']}")
-        st.image(products_instance.items[i+1]["image"])
-        if (products_instance.items[i+1]['stock'] != 0):
+        st.text(f"- {filteredProducts[i+1].name}: {filteredProducts[i+1].details}")
+        st.image(filteredProducts[i+1].image)
+        if (filteredProducts[i+1].stock != 0):
             if (st.button(f"Add to cart", key=f"button_{i+1}")):
                 addToCart(i+1)
         else:
-            st.button(label=f"{products_instance.items[i+1]['name']} is out of stock",key=f"button_{i+1}_out_of_stock",disabled=True)
+            st.button(label=f"{filteredProducts[i+1].name} is out of stock",key=f"button_{i+1}_out_of_stock",disabled=True)
 
 #checkout button and dialog
 @st.dialog("Checkout")
