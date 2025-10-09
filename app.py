@@ -25,6 +25,7 @@ for i in range(0,len(products_instance.items),2):
     # define dialog for adding to cart
     # because of the loop, need to pass i as an argument
     @st.dialog(f"Thank you for choosing {filteredProducts[i].name}! Please select the quantity.")
+    
     def addToCart(i=i):
         
         st.write(f"You have selected {filteredProducts[i].name}.")
