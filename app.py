@@ -29,6 +29,19 @@ search_results = appTesting.searchItem(search_term,inventory)
 if search_term:
     if search_results:
         st.write("There are {} results for {} ".format(len(search_results),search_term))
+        col1, col2 = st.columns(2, vertical_alignment="center", gap="medium", border=True)
+        for i in range(0, len(search_results), 2):
+            with col1:
+                st.write("Product:{}".format(search_results[i]['name']))
+                st.image(search_results[i]['image'])
+                st.write("Price:{}".format(search_results[i]['price']))
+                st.write("Stock:{}".format(search_results[i]['stock']))
+            with col2:
+                if i + 1 < len(search_results):
+                    st.write("Product:{}".format(search_results[i+1]['name']))
+                    st.image(search_results[i+1]['image'])
+                    st.write("Price:{}".format(search_results[i+1]['price']))
+                    st.write("Stock:{}".format(search_results[i+1]['stock']))                   
     else:  
         st.warning("No results found, please try again")
 else:
