@@ -39,7 +39,7 @@ elif len(_SS["dispProds"]) != len(_SS["inventory"]):
 
 # define dialog for adding to cart
 # because of the loop, need to pass i as an argument
-@st.dialog(f"Thank you for choosing this product! Please select the quantity.")
+@st.dialog(f"Thank you for choosing this product! Please select the quantity.", on_dismiss=st.rerun)
 def addToCart(i=int):
     product = _SS["dispProds"][i]
     st.write(f"You have selected {product.name}.")
@@ -61,11 +61,10 @@ def addToCart(i=int):
         
         # Rerun to reflect changes
         st.success(f"Added {quantity} of {product.name} to cart.")
-        st.rerun()
 
 
 for i in range(0,len(_SS["dispProds"]),2):
-    (col1, col2) = st.columns(2, vertical_alignment="center", gap="medium", border=False)
+    (col1, col2) = st.columns(2, vertical_alignment="center", gap="medium")
     
     #columns
     with col1:
@@ -96,7 +95,11 @@ def checkout():
         st.write(f"- {cartItem['item']}: x{cartItem['quantity']}")
     if st.button("Confirm Purchase"):
         st.success(f"Purchase confirmed!")
-        #st.success(f"Purchase confirmed! You bought {_SS.purchase['quantity']} of {_SS.purchase['item']}.")
 
-if st.button("Proceed to Checkout"):
+if st.button("Proceed to Checkout", disabled=(len(_SS["cart"])==0)):
     checkout()
+
+if st.button("Clear Cart", disabled=(len(_SS["cart"])==0)):
+    _SS["cart"].clear()
+    st.rerun()
+    st.success("Cart cleared.")
