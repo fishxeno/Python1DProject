@@ -6,9 +6,24 @@ def getCartTotal(cart: list[_p.Product]):
     total = 0
     for item in cart: 
         total += item.stock * item.getPrice(isMember)
-    # If you want to include additional charges
-    totalAfterCharges = total * 1.09
-    return (total,totalAfterCharges)
+    #my absolutely cooked code for discounts - Tze Jing
+    itemamount = len(cart)
+    if itemamount == 2:
+        discount = 0.1
+    elif itemamount == 3:
+        discount = 0.2
+    elif itemamount == 4:
+        discount = 0.3
+    elif itemamount == 5:
+        discount = 0.4
+    elif itemamount >= 6:
+        discount = 0.5
+    else:
+        discount = 0
+    discounted_amount = (total*discount)
+    after_discount = (total*(1-discount))
+    totalAfterCharges = after_discount*1.09
+    return (total,totalAfterCharges,discounted_amount)
 
 # Tze Jing / Branson
 # Function is called when a transaction has been made, it makes the necessary stock changes 
