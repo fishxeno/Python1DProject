@@ -7,11 +7,11 @@ import appTesting
 _SS = st.session_state
 if "inventory" not in _SS: _SS["inventory"] = appTesting.loadFromWarehouseDB()
 if "cart" not in _SS: _SS["cart"] = []
-if "dispProds" not in _SS: _SS["dispProds"] = [] # Displayed products
+if "dispProds" not in _SS: _SS["dispProds"] = [] # dispProds - Displayed products
 
 # We will display the filtered items here
 search_term = st.text_input("Search:") 
-_SS["dispProds"] = appTesting.searchItem(search_term,_SS["inventory"]) # This is to prevent overwriting the current stock from initial stock from inventory
+_SS["dispProds"] = appTesting.searchItem(search_term,_SS["inventory"][:]) # This is to prevent overwriting the current stock from initial stock from inventory
 
 # Inject CSS (Styling) code 
 st.html("""
@@ -28,14 +28,19 @@ st.html("""
         </style>
         """)
 
-# UI
-st.write("We have the following products:")
-
-# Information logic for filtered products
-if len(_SS["dispProds"]) == 0:
-    st.warning("No results found, please try again")
-elif len(_SS["dispProds"]) != len(_SS["inventory"]):
-    st.info("There are {} results for {} ".format(len(_SS["dispProds"]),search_term))
+#checkout button and dialog
+@st.dialog("Checkout")
+def checkout():
+    st.write("You are checking out the following item:")
+    # TODO -- IMPLEMENT LOGIC TO ALLOW USER TO MAKE QUANTITY CHANGES IN THE CHECKOUT MODAL
+    for cartItem in _SS['cart']:
+        st.write(f"- {cartItem['item']}: x{cartItem['quantity']}")
+    if st.button("Confirm Purchase"):
+        st.success(f"Purchase confirmed!")
+        _SS['cart'] = []
+        appTesting.updateWarehouseDB(_SS["inventory"])
+        st.rerun()
+        #st.success(f"Purchase confirmed! You bought {_SS.purchase['quantity']} of {_SS.purchase['item']}.")
 
 # define dialog for adding to cart
 # because of the loop, need to pass i as an argument
@@ -47,8 +52,9 @@ def addToCart(i=int):
     quantity = st.number_input("Enter quantity:", min_value=1, max_value=product.stock, value=1)
 
     if st.button("Add to cart"):
+        st.success(f"Added {quantity} of {product.name} to cart.")
 
-        # Remove from inventory (frontend)
+        # Remove from inventory and filtered products (frontend)
         _SS["dispProds"][i].removeStock(quantity)
 
         # Add to cart in session state
@@ -57,11 +63,21 @@ def addToCart(i=int):
                 cartItem["quantity"] += quantity
                 break
         else:
-            _SS["cart"].append({"item": product.name, "quantity": quantity})
+            _SS["cart"].append({"item": product.name, "quantity": quantity, "price": product.price})
         
-        # Rerun to reflect changes
-        st.success(f"Added {quantity} of {product.name} to cart.")
         st.rerun()
+
+# UI
+if st.button("Proceed to Checkout"):
+    checkout()
+
+st.write("We have the following products:")
+
+# Information logic for filtered products
+if len(_SS["dispProds"]) == 0:
+    st.warning("No results found, please try again")
+elif len(_SS["dispProds"]) != len(_SS["inventory"]):
+    st.info("There are {} results for {} ".format(len(_SS["dispProds"]),search_term))
 
 
 for i in range(0,len(_SS["dispProds"]),2):
@@ -88,15 +104,3 @@ for i in range(0,len(_SS["dispProds"]),2):
                 st.button(label=f"{_SS["dispProds"][i+1].name} is out of stock",key=f"button_{i+1}_out_of_stock",disabled=True)
 
 
-#checkout button and dialog
-@st.dialog("Checkout")
-def checkout():
-    st.write("You are checking out the following item:")
-    for cartItem in _SS['cart']:
-        st.write(f"- {cartItem['item']}: x{cartItem['quantity']}")
-    if st.button("Confirm Purchase"):
-        st.success(f"Purchase confirmed!")
-        #st.success(f"Purchase confirmed! You bought {_SS.purchase['quantity']} of {_SS.purchase['item']}.")
-
-if st.button("Proceed to Checkout"):
-    checkout()
