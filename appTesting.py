@@ -34,7 +34,7 @@ def searchItem(searchString,inventory: list[_p.Product]):
 
 # Branson
 # Update the inventory to the mock inventory database -> warehouse.json
-def updateWarehouseDB():
+def updateWarehouseDB(inventory):
     # Convert the inventory database to a list of dictionaries, for conversion to JSON
     inventory_as_dict = []
     for item in inventory:
@@ -64,7 +64,7 @@ def loadFromWarehouseDB():
 isMember = False
 inventory = loadFromWarehouseDB()
 cart = []
-
+"""
 # Simulating adding an item to cart
 itemToCart = copy.copy(inventory[0])
 itemToCart.stock = 5
@@ -76,6 +76,6 @@ cart.append(itemToCart)
 
 itemToCart = copy.copy(inventory[9])
 itemToCart.stock = 3
-cart.append(itemToCart)
+cart.append(itemToCart) """
 
-updateInventoryAndClearCart()
+#updateInventoryAndClearCart()

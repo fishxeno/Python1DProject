@@ -13,7 +13,7 @@
         "price": 15,
         "priceAfterDiscount": 14.25,
         "image": "./images/image2.png",
-        "stock": 0
+        "stock": 45
     },
     {
         "name": "OmegaBoost Pet Supplement",
