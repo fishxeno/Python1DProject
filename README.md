@@ -7,3 +7,5 @@ for yeetyeetyeet: ensure terminal file pathing is in the main folder python1DPro
 run py -m streamlit run .\app.py to start.
 
 this command will bypass using streamlit cli and directly tell python to use the module to start running
+
+py -m streamlit run .\app.py hi i will leave this here for my ref
