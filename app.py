@@ -9,6 +9,16 @@ if "inventory" not in _SS: _SS["inventory"] = appTesting.loadFromWarehouseDB()
 if "cart" not in _SS: _SS["cart"] = []
 if "dispProds" not in _SS: _SS["dispProds"] = [] # dispProds - Displayed products
 
+st.title(":rainbow[Wonderous Shop of Magical Animals!!!]:sunglasses:")
+st.subheader("DISCOUNTS:")
+st.markdown("""
+**- 2 pets :dog: for 10% off**\n
+**- 3 pets :cat: for 20% off**\n
+**- 4 pets :rabbit: for 30% off**\n
+**- 5 pets :fish: for 40% off**\n
+**- 6 pets :hamster: for 50% off**
+""")
+st.subheader("**:rainbow[What are you waiting for, shop our products below!!!]**")
 # We will display the filtered items here
 search_term = st.text_input("Search:") 
 _SS["dispProds"] = appTesting.searchItem(search_term,_SS["inventory"][:]) # This is to prevent overwriting the current stock from initial stock from inventory
@@ -44,10 +54,10 @@ def checkout():
 
 # define dialog for adding to cart
 # because of the loop, need to pass i as an argument
-@st.dialog(f"Thank you for choosing this product! Please select the quantity.")
+@st.dialog(f"Thank you for choosing this product! Please select the quantity:")
 def addToCart(i=int):
     product = _SS["dispProds"][i]
-    st.write(f"You have selected {product.name}.")
+    st.write(f"You have selected {product.name}")
     st.text(f"Stock: {product.stock}")
     quantity = st.number_input("Enter quantity:", min_value=1, max_value=product.stock, value=1)
 
@@ -64,11 +74,16 @@ def addToCart(i=int):
                 break
         else:
             _SS["cart"].append({"item": product.name, "quantity": quantity, "price": product.price})
-        
         st.rerun()
 
 # UI
 if st.button("Proceed to Checkout"):
+    total, discounted_amount, overalltotal = appTesting.getCartTotal(_SS["cart"])
+    st.write("SubTotal:{}".format(total),
+             "Discount:{}".format(discounted_amount),
+             "Total:{}".format(overalltotal))
+
+
     checkout()
 
 st.write("We have the following products:")
