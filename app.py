@@ -1,5 +1,4 @@
 import streamlit as st
-import Products as _p
 import appTesting
 
 # Initialize Variables
@@ -7,6 +6,11 @@ _SS = st.session_state
 if "inventory" not in _SS: _SS["inventory"] = appTesting.loadFromWarehouseDB()
 if "cart" not in _SS: _SS["cart"] = []
 if "dispProds" not in _SS: _SS["dispProds"] = [] # dispProds - Displayed products
+
+if "checkout_btn_disabled" not in st.session_state:
+    st.session_state.checkout_btn_disabled = False
+if "show_checkout_success" not in st.session_state:
+    st.session_state.show_checkout_success = False
 
 # We will display the filtered items here
 search_term = st.text_input("Search:") 
@@ -28,23 +32,37 @@ st.html("""
         """)
 
 #checkout button and dialog
-@st.dialog("Checkout")
+@st.dialog("Checkout", on_dismiss='rerun')
 def checkout():
     st.write("You are checking out the following item:")
     # TODO -- IMPLEMENT LOGIC TO ALLOW USER TO MAKE QUANTITY CHANGES IN THE CHECKOUT MODAL
     for cartItem in _SS['cart']:
         st.write(f"- {cartItem['item']}: x{cartItem['quantity']}")
-    if st.button("Confirm Purchase"):
-        st.success(f"Purchase confirmed!")
+    if st.button("Confirm Purchase", disabled=st.session_state.checkout_btn_disabled):
+        #disable the button after clicking, show success toast message
+        st.session_state.checkout_btn_disabled = True
+        st.session_state.show_checkout_success = True
         _SS['cart'] = []
         appTesting.updateWarehouseDB(_SS["inventory"])
         st.rerun()
-        #st.success(f"Purchase confirmed! You bought {_SS.purchase['quantity']} of {_SS.purchase['item']}.")
+        
+# show toast if purchase successful
+if st.session_state.show_checkout_success:
+    st.toast("Purchase successful!", duration=6000)
+    st.session_state.show_checkout_success = False
+
+if st.button("Clear Cart", disabled=(len(_SS["cart"])==0)):
+    _SS["cart"].clear()
+    st.rerun()
+    st.toast("Cart cleared!", duration=3000)
 
 # define dialog for adding to cart
 # because of the loop, need to pass i as an argument
 @st.dialog(f"Thank you for choosing this product! Please select the quantity.")
 def addToCart(i=int):
+    #enable checkout button
+    st.session_state.checkout_btn_disabled = False
+    
     product = _SS["dispProds"][i]
     st.write(f"You have selected {product.name}.")
     st.text(f"Stock: {product.stock}")
@@ -63,11 +81,10 @@ def addToCart(i=int):
                 break
         else:
             _SS["cart"].append({"item": product.name, "quantity": quantity, "price": product.price})
-        
         st.rerun()
 
 # UI
-if st.button("Proceed to Checkout"):
+if st.button("Proceed to Checkout", disabled=(len(_SS["cart"])==0)):
     checkout()
 
 st.write("We have the following products:")
