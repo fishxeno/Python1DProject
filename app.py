@@ -57,7 +57,6 @@ def checkout():
         #disable the button after clicking, show success toast message
         st.session_state.checkout_btn_disabled = True
         st.session_state.show_checkout_success = True
-        _SS['cart'] = []
         st.success(f"Purchase confirmed!")
         appTesting.updateWarehouseDB(_SS["inventory"])
         st.rerun()
@@ -68,7 +67,8 @@ if st.session_state.show_checkout_success:
     st.session_state.show_checkout_success = False
 
 if st.button("Clear Cart", disabled=(len(_SS["cart"])==0)):
-    _SS["cart"].clear()
+    _SS["cart"].clear() #clear cart
+    _SS["dispProds"] = appTesting.searchItem(search_term,_SS["inventory"][:]) #reset displayed products to initial stock TODO bugged
     st.rerun()
     st.toast("Cart cleared!", duration=3000)
 
