@@ -23,8 +23,9 @@ def getCartTotal(cart: list[_p.Product]):
         discount = 0
     discounted_amount = (total*discount)
     after_discount = (total*(1-discount))
+    tax = after_discount*0.09
     overalltotal = after_discount*1.09
-    return (total,discounted_amount,overalltotal)
+    return (total,discounted_amount,tax,overalltotal)
 
 # Tze Jing / Branson
 # Function is called when a transaction has been made, it makes the necessary stock changes 

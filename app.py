@@ -42,18 +42,20 @@ st.html("""
 @st.dialog("Checkout")
 def checkout():
     st.write("You are checking out the following item:")
+    total, discounted_amount, tax, overalltotal = appTesting.getCartTotal(_SS["cart"])
     # TODO -- IMPLEMENT LOGIC TO ALLOW USER TO MAKE QUANTITY CHANGES IN THE CHECKOUT MODAL
     for cartItem in _SS['cart']:
         st.write(f"- {cartItem['item']}: x{cartItem['quantity']}")
-        total, discounted_amount, overalltotal = appTesting.getCartTotal(_SS["cart"])
-        st.write("SubTotal: ${:.2f}".format(total))
-        st.write("Discount: ${:.2f}".format(discounted_amount))
-        st.write("Total: ${:.2f}".format(overalltotal))
+        st.write("SubTotal: ${:.2f}".format(cartItem['quantity'] * cartItem['price']))
+    st.write("Discount: ${:.2f}".format(discounted_amount))
+    st.write("GST Tax: ${:.2f}".format(tax))
+    st.write("Total: ${:.2f}".format(overalltotal))
     if st.button("Confirm Purchase"):
         st.success(f"Purchase confirmed!")
         _SS['cart'] = []
         appTesting.updateWarehouseDB(_SS["inventory"])
         st.rerun()
+    
         #st.success(f"Purchase confirmed! You bought {_SS.purchase['quantity']} of {_SS.purchase['item']}.")
 
 # define dialog for adding to cart
