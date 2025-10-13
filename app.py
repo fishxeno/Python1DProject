@@ -49,18 +49,16 @@ def checkout():
     # TODO -- IMPLEMENT LOGIC TO ALLOW USER TO MAKE QUANTITY CHANGES IN THE CHECKOUT MODAL
     for cartItem in _SS['cart']:
         st.write(f"- {cartItem['item']}: x{cartItem['quantity']}")
+        st.write("SubTotal: ${:.2f}".format(cartItem['quantity'] * cartItem['price']))
+    st.write("Discount: ${:.2f}".format(discounted_amount))
+    st.write("GST Tax: ${:.2f}".format(tax))
+    st.write("Total: ${:.2f}".format(overalltotal))
     if st.button("Confirm Purchase", disabled=st.session_state.checkout_btn_disabled):
         #disable the button after clicking, show success toast message
         st.session_state.checkout_btn_disabled = True
         st.session_state.show_checkout_success = True
         _SS['cart'] = []
-        st.write("SubTotal: ${:.2f}".format(cartItem['quantity'] * cartItem['price']))
-    st.write("Discount: ${:.2f}".format(discounted_amount))
-    st.write("GST Tax: ${:.2f}".format(tax))
-    st.write("Total: ${:.2f}".format(overalltotal))
-    if st.button("Confirm Purchase"):
         st.success(f"Purchase confirmed!")
-        _SS['cart'] = []
         appTesting.updateWarehouseDB(_SS["inventory"])
         st.rerun()
 
