@@ -5,7 +5,7 @@ import Products as _p, copy, json
 def getCartTotal(cart: list[_p.Product]):  
     total = 0
     for item in cart: 
-        total += item.stock * item.getPrice(isMember)
+        total += item["quantity"] * item["price"]
     #my absolutely cooked code for discounts - Tze Jing
     itemamount = len(cart)
     if itemamount == 2:
