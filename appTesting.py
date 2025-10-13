@@ -4,19 +4,20 @@ import Products as _p, copy, json
 # Returns initial total and total after additional charges
 def getCartTotal(cart: list[_p.Product]):  
     total = 0
+    quantity = 0
     for item in cart: 
-        total += item["quantity"] * item["price"]
+        total = total + item["quantity"] * item["price"]
+        quantity = quantity + item["quantity"]
     #my absolutely cooked code for discounts - Tze Jing
-    itemamount = len(cart)
-    if itemamount == 2:
+    if quantity == 2:
         discount = 0.1
-    elif itemamount == 3:
+    elif quantity == 3:
         discount = 0.2
-    elif itemamount == 4:
+    elif quantity == 4:
         discount = 0.3
-    elif itemamount == 5:
+    elif quantity == 5:
         discount = 0.4
-    elif itemamount >= 6:
+    elif quantity >= 6:
         discount = 0.5
     else:
         discount = 0

@@ -45,6 +45,10 @@ def checkout():
     # TODO -- IMPLEMENT LOGIC TO ALLOW USER TO MAKE QUANTITY CHANGES IN THE CHECKOUT MODAL
     for cartItem in _SS['cart']:
         st.write(f"- {cartItem['item']}: x{cartItem['quantity']}")
+        total, discounted_amount, overalltotal = appTesting.getCartTotal(_SS["cart"])
+        st.write("SubTotal: ${:.2f}".format(total))
+        st.write("Discount: ${:.2f}".format(discounted_amount))
+        st.write("Total: ${:.2f}".format(overalltotal))
     if st.button("Confirm Purchase"):
         st.success(f"Purchase confirmed!")
         _SS['cart'] = []
@@ -78,12 +82,6 @@ def addToCart(i=int):
 
 # UI
 if st.button("Proceed to Checkout"):
-    total, discounted_amount, overalltotal = appTesting.getCartTotal(_SS["cart"])
-    st.write("SubTotal:{}".format(total),
-             "Discount:{}".format(discounted_amount),
-             "Total:{}".format(overalltotal))
-
-
     checkout()
 
 st.write("We have the following products:")
