@@ -12,14 +12,14 @@ if "checkout_btn_disabled" not in st.session_state:
 if "show_checkout_success" not in st.session_state:
     st.session_state.show_checkout_success = False
 
-st.title(":rainbow[Wonderous Shop of Magical Animals!!!]:sunglasses:")
+st.title(":rainbow[Kiki's Pet Food Delivery Service !!!]:sunglasses:")
 st.subheader("DISCOUNTS:")
 st.markdown("""
-**- 2 pets :dog: for 10% off**\n
-**- 3 pets :cat: for 20% off**\n
-**- 4 pets :rabbit: for 30% off**\n
-**- 5 pets :fish: for 40% off**\n
-**- 6 pets :hamster: for 50% off**
+**- 2 products :dog: for 10% off**\n
+**- 3 products :cat: for 20% off**\n
+**- 4 products :rabbit: for 30% off**\n
+**- 5 products :fish: for 40% off**\n
+**- 6 products :hamster: for 50% off**
 """)
 st.subheader("**:rainbow[What are you waiting for, shop our products below!!!]**")
 # We will display the filtered items here
