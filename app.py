@@ -1,5 +1,6 @@
 import streamlit as st
 import appTesting
+from PIL import Image
 
 # Initialize Variables
 _SS = st.session_state
@@ -12,16 +13,16 @@ if "checkout_btn_disabled" not in st.session_state:
 if "show_checkout_success" not in st.session_state:
     st.session_state.show_checkout_success = False
 
-st.title(":rainbow[Kiki's Pet Food Delivery Service !!!]:sunglasses:")
-st.subheader("DISCOUNTS:")
-st.markdown("""
-**- 2 products :dog: for 10% off**\n
-**- 3 products :cat: for 20% off**\n
-**- 4 products :rabbit: for 30% off**\n
-**- 5 products :fish: for 40% off**\n
-**- 6 products :hamster: for 50% off**
-""")
-st.subheader("**:rainbow[What are you waiting for, shop our products below!!!]**")
+st.title(":blue[Kiki's Pet Food Delivery Service!]")
+st.subheader(":red[DISCOUNTS:]")
+st.markdown(":blue[**- 2 products** :dog: **for 10% off**]")
+st.markdown(":blue[**- 3 products** :cat: **for 20% off**]")
+st.markdown(":blue[**- 4 products** :rabbit: **for 30% off**]")
+st.markdown(":blue[**- 5 products** :fish: **for 40% off**]")
+st.markdown(":blue[**- 6 products** :hamster: **for 50% off**]")
+st.image("images/image11.png")
+st.subheader("**:red[What are you waiting for,shop our products below]:cat: :red[!!!]**")
+
 # We will display the filtered items here
 search_term = st.text_input("Search:") 
 _SS["dispProds"] = appTesting.searchItem(search_term,_SS["inventory"][:]) # This is to prevent overwriting the current stock from initial stock from inventory
