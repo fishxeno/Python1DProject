@@ -5,7 +5,7 @@
         "price": 10,
         "priceAfterDiscount": 9.5,
         "image": "./images/image1.png",
-        "stock": 50
+        "stock": 34
     },
     {
         "name": "Catnip Plush Mouse Toy",
@@ -13,7 +13,7 @@
         "price": 15,
         "priceAfterDiscount": 14.25,
         "image": "./images/image2.png",
-        "stock": 45
+        "stock": 40
     },
     {
         "name": "OmegaBoost Pet Supplement",
@@ -45,7 +45,7 @@
         "price": 35,
         "priceAfterDiscount": 33.25,
         "image": "./images/image6.png",
-        "stock": 5
+        "stock": 0
     },
     {
         "name": "Mini Hamster Starter Kit",
