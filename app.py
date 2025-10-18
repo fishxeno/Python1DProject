@@ -1,6 +1,5 @@
 import streamlit as st
 import appTesting
-from PIL import Image
 
 # Initialize Variables
 _SS = st.session_state
