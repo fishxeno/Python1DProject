@@ -53,5 +53,6 @@ with st.sidebar:
     # 20/10/2025 - Fixed cart clear issue
         _SS["cart"].clear() 
         _SS["inventory"] = copy.deepcopy(_SS["inventory_copy"])
+        appfunctions.updateWarehouseDB(_SS["inventory"])
         st.rerun()
         st.toast("Cart cleared!", duration=3)

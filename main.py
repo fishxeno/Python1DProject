@@ -35,7 +35,6 @@ st.html("""
         """)
 
 # show toast if purchase successful
-
 if _SS.show_added_to_cart:
     _SS.show_added_to_cart = False
     st.toast(_SS.addToCart_message, duration=3)
@@ -47,7 +46,6 @@ if st.button("Clear Cart", disabled=(len(_SS["cart"])==0)):
     _SS["dispProds"] = appfunctions.searchItem(search_term,_SS["inventory"])
     st.rerun()
     st.toast("Cart cleared!", duration=3)
-
 
 # define dialog for adding to cart
 # because of the loop, need to pass i as an argument
