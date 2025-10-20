@@ -8,7 +8,7 @@ def getCartTotal(cart: list[_p.Product]):
     for item in cart: 
         total = total + item["quantity"] * item["price"]
         quantity = quantity + item["quantity"]
-    #my absolutely cooked code for discounts - Tze Jing
+    # My absolutely cooked code for discounts - Tze Jing
     if quantity == 2:
         discount = 0.1
     elif quantity == 3:

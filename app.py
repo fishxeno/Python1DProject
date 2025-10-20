@@ -49,5 +49,9 @@ pg = st.navigation([st.Page("main.py", title="Our Products", default=True),
 pg.run()
 
 with st.sidebar:
-    # TODO: Jing to shift clear cart button into the sidebar
-    pass
+    if st.button("Clear Cart", disabled=(len(_SS["cart"])==0)):
+    # 20/10/2025 - Fixed cart clear issue
+        _SS["cart"].clear() 
+        _SS["inventory"] = copy.deepcopy(_SS["inventory_copy"])
+        st.rerun()
+        st.toast("Cart cleared!", duration=3)
