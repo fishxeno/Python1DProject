@@ -1,5 +1,6 @@
 import streamlit as st
-import appTesting
+import appfunctions
+import copy
 from PIL import Image
 
 # Initialize Variables
@@ -17,7 +18,7 @@ st.subheader("**:red[What are you waiting for,shop our products below]:cat: :red
 
 # We will display the filtered items here
 search_term = st.text_input("Search:") 
-_SS["dispProds"] = appTesting.searchItem(search_term,_SS["inventory"][:]) # This is to prevent overwriting the current stock from initial stock from inventory
+_SS["dispProds"] = appfunctions.searchItem(search_term,_SS["inventory"])
 
 st.html("""
         <style>
@@ -33,25 +34,6 @@ st.html("""
         </style>
         """)
 
-#checkout button and dialog
-@st.dialog("Checkout", on_dismiss='rerun')
-def checkout():
-    st.write("You are checking out the following item:")
-    total, discounted_amount, tax, overalltotal = appTesting.getCartTotal(_SS["cart"])
-    # TODO -- IMPLEMENT LOGIC TO ALLOW USER TO MAKE QUANTITY CHANGES IN THE CHECKOUT MODAL
-    for cartItem in _SS['cart']:
-        st.write(f"- {cartItem['item']}: x{cartItem['quantity']}")
-        st.write("SubTotal: ${:.2f}".format(cartItem['quantity'] * cartItem['price']))
-    st.write("Discount: ${:.2f}".format(discounted_amount))
-    st.write("GST Tax: ${:.2f}".format(tax))
-    st.write("Total: ${:.2f}".format(overalltotal))
-    if st.button("Confirm Purchase", disabled=st.session_state.checkout_btn_disabled):
-        #disable the button after clicking, show success toast message
-        st.session_state.checkout_btn_disabled = True
-        st.session_state.show_checkout_success = True
-        appTesting.updateWarehouseDB(_SS["inventory"])
-        st.rerun()
-
 # show toast if purchase successful
 
 if _SS.show_added_to_cart:
@@ -59,8 +41,10 @@ if _SS.show_added_to_cart:
     st.toast(_SS.addToCart_message, duration=3)
 
 if st.button("Clear Cart", disabled=(len(_SS["cart"])==0)):
-    _SS["cart"].clear() #clear cart
-    _SS["dispProds"] = appTesting.searchItem(search_term,_SS["inventory"][:]) #reset displayed products to initial stock TODO bugged
+    # 20/10/2025 - Fixed cart clear issue
+    _SS["cart"].clear() 
+    _SS["inventory"] = copy.deepcopy(_SS["inventory_copy"])
+    _SS["dispProds"] = appfunctions.searchItem(search_term,_SS["inventory"])
     st.rerun()
     st.toast("Cart cleared!", duration=3)
 
@@ -79,7 +63,7 @@ def addToCart(i=int):
 
     if st.button("Add to cart"):
         # Remove from inventory and filtered products (frontend)
-        _SS["dispProds"][i].removeStock(quantity)
+        _SS["dispProds"][i].updateStock(-quantity)
         _SS.show_added_to_cart = True
         _SS.addToCart_message = f"Added {quantity} of {product.name} to cart."
         # Add to cart in session state

@@ -1,6 +1,6 @@
-import Products as _p, copy, json
+import Products as _p, json
 
-# Branson
+# Branson / Tze Jing
 # Returns initial total and total after additional charges
 def getCartTotal(cart: list[_p.Product]):  
     total = 0
@@ -26,17 +26,6 @@ def getCartTotal(cart: list[_p.Product]):
     tax = after_discount*0.09
     overalltotal = after_discount*1.09
     return (total,discounted_amount,tax,overalltotal)
-
-# Tze Jing / Branson
-# Function is called when a transaction has been made, it makes the necessary stock changes 
-# to the inventory variable and clears the cart 
-def updateInventoryAndClearCart():
-    for item in cart:
-        for inventoryitem in inventory:
-            if item.name == inventoryitem.name: #matches item to items in inventory 
-                inventoryitem.removeStock(item.stock) #removes item from inventory
-    cart.clear()     
-    updateWarehouseDB() # changes are made to the mock database
 
 # Tze Jing
 # Returns a list (copy) of products from a search string - case-insensitive
@@ -76,23 +65,3 @@ def loadFromWarehouseDB():
             
         return inventory
             
-# MAIN LOGIC FOR THE CODE STARTS HERE
-# Test the business logic for the application using print/input statements before incorporating into streamlit
-isMember = False
-inventory = loadFromWarehouseDB()
-cart = []
-"""
-# Simulating adding an item to cart
-itemToCart = copy.copy(inventory[0])
-itemToCart.stock = 5
-cart.append(itemToCart)
-
-itemToCart = copy.copy(inventory[1])
-itemToCart.stock = 10
-cart.append(itemToCart)
-
-itemToCart = copy.copy(inventory[9])
-itemToCart.stock = 3
-cart.append(itemToCart) """
-
-#updateInventoryAndClearCart()

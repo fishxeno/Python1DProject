@@ -1,5 +1,6 @@
 import streamlit as st
-import appTesting
+import appfunctions
+import copy
 # Initialize Variables
 st.title("My Cart 🛒")
 _SS = st.session_state
@@ -21,7 +22,7 @@ def editProduct(item, index):
         print(_SS["cart"][index])
         # Check for changes in quantity
         diff = new_quantity - initial_quantity
-        _SS["dispProds"][product_index].removeStock(diff)
+        _SS["dispProds"][product_index].updateStock(-diff)
         _SS["cart"][index]["quantity"] += diff
         st.rerun()
 
@@ -31,18 +32,19 @@ def removeProduct(item):
     if st.button("OK"):
         for prod in _SS["dispProds"]:
             if prod.name == item['item']:
-                prod.addStock(item['quantity'])
+                prod.updateStock(item['quantity'])
         _SS["cart"].remove(item)
         st.rerun()
 
 @st.dialog("Checkout", on_dismiss='rerun')
 def checkout():
     st.write("Confirm your purchase?")
-    if st.button("Confirm Purchase", disabled=st.session_state.checkout_btn_disabled):
+    if st.button("Confirm Purchase", disabled=_SS.checkout_btn_disabled):
         #disable the button after clicking, show success toast message
-        st.session_state.checkout_btn_disabled = True
-        st.session_state.show_checkout_success = True
-        appTesting.updateWarehouseDB(_SS["inventory"])
+        _SS.checkout_btn_disabled = True
+        _SS.show_checkout_success = True
+        appfunctions.updateWarehouseDB(_SS["inventory"])
+        _SS["inventory_copy"] = copy.deepcopy(_SS["inventory"]) # update inventory copy
         _SS["cart"].clear() #clear cart
         st.rerun()
 
@@ -82,7 +84,7 @@ else:
 
     st.markdown("<hr/>", unsafe_allow_html=True)
     
-    (total, discounted_amount, tax, overalltotal) = appTesting.getCartTotal(_SS["cart"])
+    (total, discounted_amount, tax, overalltotal) = appfunctions.getCartTotal(_SS["cart"])
     (foot_col1, foot_col2) = st.columns([0.7,0.3], vertical_alignment="center", gap=None, border=False)
     
     foot_col1.markdown(f"##### Total")

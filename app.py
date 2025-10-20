@@ -1,10 +1,12 @@
 import streamlit as st
-import appTesting
+import appfunctions
+import copy
 
 # Initialize session state
 _SS = st.session_state
 
-if "inventory" not in _SS: _SS["inventory"] = appTesting.loadFromWarehouseDB()
+if "inventory" not in _SS: _SS["inventory"] = appfunctions.loadFromWarehouseDB()
+if "inventory_copy" not in _SS: _SS["inventory_copy"] = copy.deepcopy(_SS["inventory"]) # Keep a copy of the loaded items
 if "cart" not in _SS: _SS["cart"] = []
 if "dispProds" not in _SS: _SS["dispProds"] = [] # dispProds - Displayed products
 
@@ -43,6 +45,9 @@ unsafe_allow_html=True,
 )
 
 pg = st.navigation([st.Page("main.py", title="Our Products", default=True), 
-                    st.Page("checkout.py", title="My Cart")])
+                    st.Page("checkout.py", title=f"🛒 My Cart - {len(_SS['cart'])} items")])
 pg.run()
 
+with st.sidebar:
+    # TODO: Jing to shift clear cart button into the sidebar
+    pass
