@@ -9,18 +9,11 @@ def getCartTotal(cart: list[_p.Product]):
         total = total + item["quantity"] * item["price"]
         quantity = quantity + item["quantity"]
     # My absolutely cooked code for discounts - Tze Jing
-    if quantity == 2:
-        discount = 0.1
-    elif quantity == 3:
-        discount = 0.2
-    elif quantity == 4:
-        discount = 0.3
-    elif quantity == 5:
-        discount = 0.4
-    elif quantity >= 6:
+    discount_rates = {2:0.1, 3:0.2, 4:0.3, 5:0.4}
+    if quantity >= 6:
         discount = 0.5
     else:
-        discount = 0
+        discount = discount_rates.get(quantity,0)
     discounted_amount = (total*discount)
     after_discount = (total*(1-discount))
     tax = after_discount*0.09
